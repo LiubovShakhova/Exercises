@@ -54,16 +54,16 @@ console.log(`дневной бюджет: ${budgetDay}`);
 //вызов функции getStatusIncome
 let getStatusIncome = function() {
   if (budgetDay >= 1200) {
-    console.log('У вас высокий уровень дохода');
+    return ('У вас высокий уровень дохода');
   } else if ( budgetDay > 600 && budgetDay < 1200) {
-    console.log('У вас средний уровень дохода');
+    return ('У вас средний уровень дохода');
   } else if (budgetDay <= 600 && budgetDay >= 0) {
-    console.log('К сожалению, у вас уровень дохода ниже среднего');
+    return ('К сожалению, у вас уровень дохода ниже среднего');
   } else {
-    console.log('Что то пошло не так');
+    return ('Что то пошло не так');
   }
 };
-getStatusIncome();
+console.log(getStatusIncome());
 
 //Cрок достижения цели в месяцах (результат вызова функции getTargetMonth) 
 let target;
