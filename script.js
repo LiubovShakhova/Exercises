@@ -29,8 +29,9 @@ switch(lang) {
   ["en", "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday"]
 ];
 for ( let i = 0; i < arr.length; i++ ){
-  for (let j = 0; j < arr[i].length; j++ ) {
-    alert(arr[i][j]);
+  for (let j = 0; j < arr[i--].length; j++ ) {
+    //alert(arr[i][j]);
+    lang === arr[0][0] ? alert(arr[0][1]) : alert(arr[1][1]);
 }
 } */
 
