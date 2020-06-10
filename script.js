@@ -8,7 +8,7 @@ for ( let i = 0; i < arr.length; i++ ) {
   }
 }
 
-
+// Вывести в столбик все простые числа от 1 до 100
 let num = 100;
 for ( let i = 2; i <= num; i++ ) {
   let res = 1;
