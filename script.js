@@ -19,7 +19,7 @@ showTypeOf(deposit);
 let budgetDay = money / 30;
 
 //Вывод возможных расходов в виде массива (addExpenses)
-console.log(addExpenses.split(', '));
+console.log(addExpenses.toLowerCase().split(', '));
 
 money = +prompt('Ваш месячный доход?');
 addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'internet, rent');
@@ -36,8 +36,7 @@ let amount2 = +prompt('Во сколько это обойдется?');
 let getExpensesMonth = function() {
   return amount1 + amount2;
 };
-getExpensesMonth();
-console.log(getExpensesMonth);
+console.log(getExpensesMonth());
 
 function getAccumulatedMonth() {
   return money -(amount1 + amount2);
