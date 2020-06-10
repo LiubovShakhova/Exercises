@@ -33,7 +33,7 @@ let amount2 = +prompt('Во сколько это обойдется?');
 
 
 //Расходы за месяц вызов getExpensesMonth
-const getExpensesMonth = function() {
+let getExpensesMonth = function() {
   return amount1 + amount2;
 };
 getExpensesMonth();
