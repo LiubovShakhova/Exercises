@@ -8,7 +8,8 @@ let money,
     sum,
     target,
     accumulatedMonth,
-    getStatusIncome;
+    getStatusIncome,
+    message;
 let start = function() {
       do {
         money = prompt('Ваш месячный доход?');
@@ -32,12 +33,8 @@ let appData = {
   period: 3,
   getExpensesMonth: function() {
     sum = 0;
-    for ( let i = 0; i < 2; i++) {
-    appData.expenses[i] = prompt('Введите обязательную статью расходов?');
-    sum += +prompt('Во сколько это обойдется?');
-    if (!isNumber(sum)) {
-      sum = +prompt('Во сколько это обойдется?');
-    }
+    for (let key in appData.expenses) {
+      sum += appData.expenses[key];
     }
     return sum;
   },
@@ -48,6 +45,16 @@ let appData = {
     let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'internet, rent');
     appData.addExpenses = addExpenses.toLowerCase().split(', ');
     appData.deposit = confirm('Есть ли у вас депозит в банке?');
+
+    for ( let i = 0; i < 2; i++) {
+      const question = prompt('Введите обязательную статью расходов?');
+      do { 
+        message = +prompt('Во сколько это обойдется?');
+      } while (!isNumber(message));
+      
+      appData.expenses[question] = message;
+      console.log(appData.expenses);
+      }  
   },
   getTargetMonth: function() {
     target = Math.ceil(appData.mission / accumulatedMonth);
