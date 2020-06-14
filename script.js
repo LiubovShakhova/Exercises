@@ -95,13 +95,13 @@ console.log(getStatusIncome());
 let target;
 const getTargetMonth = function(){
   target = Math.ceil(mission / accumulatedMonth);
-  return;
+  if (target < 0) {
+    console.log(`Цель не может быть достигнута`);  
+  } else {
+    console.log(`за ${target} месяцев будет достигнута цель`);
+  }
 };
-if (target < 0) {
-  console.log(`Цель не может быть достигнута`);  
-} else {
-  console.log(`за ${target} месяцев будет достигнута цель`);
-}
+
 getTargetMonth();
 
 
