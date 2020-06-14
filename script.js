@@ -40,6 +40,7 @@ let appData = {
   },
   getAccumulatedMonth: function() {
     return appData.budget - sum;
+    
   },
   asking: function() {
     let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'internet, rent');
