@@ -53,8 +53,11 @@ let appData = {
     }
 
     let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'internet, rent');
-    appData.addExpenses = addExpenses.toLowerCase().split(', ');
+    //Возможные расходы (addExpenses) вывести строкой в консоль каждое слово с большой 
+    appData.addExpenses = addExpenses.split().join(', ');
+    appData.addExpenses = addExpenses.split('')[0].toUpperCase() + addExpenses.slice(1);
     appData.deposit = confirm('Есть ли у вас депозит в банке?');
+
     let message;
     for ( let i = 0; i < 2; i++) {
       let question = prompt('Введите обязательную статью расходов?');
@@ -124,5 +127,4 @@ console.log(appData.percentDeposit, appData.moneyDeposit, appData.calcSavedMoney
 
 
 
-
-
+console.log(appData.addExpenses);
