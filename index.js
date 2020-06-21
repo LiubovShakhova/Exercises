@@ -27,6 +27,26 @@ let targetAmount = document.querySelector('.target-amount');
 let periodSelect = document.querySelector('input#period-select');
 let periodAmount = document.querySelector('.period-amount');
 
+//3)Поля с placeholder="Сумма" разрешить ввод только цифр
+document.querySelector('.expenses-amount').addEventListener('keyup', function(){
+  this.value = this.value.replace(/[^\d]/g, '');
+});
+document.querySelector('.income-amount').addEventListener('keyup', function(){
+  this.value = this.value.replace(/[^\d]/g, '');
+});
+//2) Поля с placeholder="Наименование" разрешить ввод только русских букв пробелов и знаков препинания
+document.getElementsByClassName('additional_income-item')[0].addEventListener('keyup', function(){
+  this.value = this.value.replace(/[\d a-zA-Z]/g, '');
+});
+document.getElementsByClassName('additional_income-item')[1].addEventListener('keyup', function(){
+  this.value = this.value.replace(/[\d a-zA-Z]/g, '');
+});
+document.getElementsByClassName('income-title').addEventListener('keyup', function(){
+  this.value = this.value.replace(/[\d a-zA-Z]/g, '');
+});
+document.getElementsByClassName('expenses-title').addEventListener('keyup', function(){
+  this.value = this.value.replace(/[\d a-zA-Z]/g, '');
+});
 
 let isNumber = function(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
@@ -78,7 +98,9 @@ let appData = {
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
     expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesAddButton);
     expensesItems = document.querySelectorAll('.expenses-items');
-
+    expensesItems.forEach (function(item) {
+      item.value = '';
+    });
     if (expensesItems.length === 3) {
       expensesAddButton.style.display = 'none';
     }
