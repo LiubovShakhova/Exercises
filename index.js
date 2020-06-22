@@ -1,6 +1,7 @@
 'use strict';
 
 let startButton = document.getElementById('start');
+let cancelButton = document.getElementById('cancel');
 let incomeAddButton = document.getElementsByTagName('button')[0];
 let expensesAddButton = document.getElementsByTagName('button')[1];
 let depositCheck = document.querySelector('#deposit-check');
@@ -41,10 +42,10 @@ document.getElementsByClassName('additional_income-item')[0].addEventListener('k
 document.getElementsByClassName('additional_income-item')[1].addEventListener('keyup', function(){
   this.value = this.value.replace(/[\d a-zA-Z]/g, '');
 });
-document.getElementsByClassName('income-title').addEventListener('keyup', function(){
+document.querySelector('.income-title').addEventListener('keyup', function(){
   this.value = this.value.replace(/[\d a-zA-Z]/g, '');
 });
-document.getElementsByClassName('expenses-title').addEventListener('keyup', function(){
+document.querySelector('.expenses-title').addEventListener('keyup', function(){
   this.value = this.value.replace(/[\d a-zA-Z]/g, '');
 });
 
@@ -72,14 +73,24 @@ let appData = {
       }
 
     appData.budget = +salaryAmount.value;
-    appData.getIncome();
-    appData.getExpenses();
-    appData.getExpensesMonth(); 
-    appData.getAddExpenses();
-    appData.getAddIncome();
-    appData.getBudget();
-    appData.changePeriod();
-    appData.showResult();
+    this.getIncome();
+    this.getExpenses();
+    this.getExpensesMonth(); 
+    this.getAddExpenses();
+    this.getAddIncome();
+    this.getBudget();
+    this.changePeriod();
+    this.showResult();
+    this.canceled();
+    console.log(this);
+  },
+  // Блокировать все input[type=text] с левой стороны после нажатия кнопки рассчитать, после этого кнопка Рассчитать пропадает и появляется кнопка Сбросить, 
+  canceled: function() {
+    document.querySelectorAll('.data input[type=text]').forEach(function(item) {
+      item.disabled = true;
+    });
+    startButton.style.display = 'none';
+    cancelButton.style.display = 'block';
   },
   showResult: function() {
     budgetMonthValue.value = appData.budgetMonth;
@@ -87,11 +98,11 @@ let appData = {
     expensesMonthValue.value = appData.expensesMonth;
     additionalExpensesValue.value = appData.addExpenses.join(', ');
     additionalIncomeValue.value = appData.addIncome.join(', ');
-    targetMonthValue.value = appData.getTargetMonth();
-    incomePeriodValue.value = appData.calcSavedMoney();
+    targetMonthValue.value = this.getTargetMonth();
+    incomePeriodValue.value = this.calcSavedMoney();
     //После нажатия кнопки рассчитать, если меняем ползунок в range, “Накопления за период” меняются динамически
-    if (appData.start) {
-      periodSelect.addEventListener('input', appData.start);
+    if (this.start) {
+      periodSelect.addEventListener('input', this.start);
     }
   },
   getExpensesBlock: function(){
@@ -146,7 +157,7 @@ let appData = {
       }
     });
     for (let key in appData.income) {
-      appData.income += +appData.income[key];
+      appData.income += appData.income[key];
       /* appData.incomeMonth = +appData.income; */
     }
   },
@@ -212,7 +223,21 @@ let appData = {
   },
 
 };
+//1) Привязать контекст вызова функции start к appData 
+appData.start = appData.start.bind(appData);
 
+//Метод reset должен всю программу возвращать в исходное состояние
+cancelButton.addEventListener('click', function() {
+  let inputs = document.querySelectorAll('input');
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].value = '';
+      }
+      document.querySelectorAll('.data input[type=text]').forEach(function(item) {
+        item.disabled = false;
+      });
+      startButton.style.display = 'block';
+      cancelButton.style.display = 'none';
+});
 startButton.addEventListener('click', appData.start);
 expensesAddButton.addEventListener('click', appData.getExpensesBlock);
 incomeAddButton.addEventListener('click', appData.getIncomeBlock);
