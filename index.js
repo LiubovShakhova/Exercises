@@ -146,8 +146,7 @@ let appData = {
       }
     });
     for (let key in appData.income) {
-      appData.income += +appData.income[key];
-      /* appData.incomeMonth = +appData.income; */
+      appData.incomeMonth += +appData.income[key];
     }
   },
   getAddExpenses: function() {
