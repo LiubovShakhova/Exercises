@@ -231,5 +231,5 @@ incomeAddButton.addEventListener('click', appData.getIncomeBlock);
 periodSelect.addEventListener('input', appData.changePeriod);
 
 
-appData.getInfoDeposit();/* 
+appData.getInfoDeposit(); 
 
