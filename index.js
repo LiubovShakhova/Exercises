@@ -136,18 +136,6 @@ let appData = {
     }
   },
   getIncome: function() {
-    /* if(confirm('Есть ли у Вас дополнительный источник заработка?')) {
-      let itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Таксую');
-      while (/[0-9.,:]/.test(itemIncome)) {
-        itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Таксую');
-      }
-      let cashIncome = prompt('Сколько в месяц вы на этом зарабатываете?', 10000); 
-      
-      while (!isNumber(cashIncome)) {
-        cashIncome = prompt('Сколько в месяц вы на этом зарабатываете?', 10000); 
-      }
-      appData.income[itemIncome] = cashIncome;
-    } */
     incomeItems.forEach(function(item) {
       incomeTitle = document.querySelector('input.income-title').value;
       let incomeAmount = document.querySelector('.income-amount').value;
@@ -156,9 +144,8 @@ let appData = {
         appData.income[incomeTitle] = incomeAmount;
       }
     });
-    for (let key in appData.income) {
-      appData.income += appData.income[key];
-      /* appData.incomeMonth = +appData.income; */
+    for (let key in this.income) {
+      this.incomeMonth += +this.income[key];
     }
   },
   getAddExpenses: function() {
@@ -243,20 +230,6 @@ expensesAddButton.addEventListener('click', appData.getExpensesBlock);
 incomeAddButton.addEventListener('click', appData.getIncomeBlock);
 periodSelect.addEventListener('input', appData.changePeriod);
 
-/* if (appData.getTargetMonth < 0) {
-  console.log(`Цель не может быть достигнута`);  
-} else {
-  console.log('Цель будет достигнута за ' + Math.ceil(appData.getTargetMonth()) + 'месяцев');
-}
- */
-
-/* for (let key in appData) {
-  console.log('Наша программа включает в себя данные: ' + key +'-' + appData[key]);
-} */
 
 appData.getInfoDeposit();/* 
-console.log(appData.percentDeposit, appData.moneyDeposit, appData.calcSavedMoney()); */
 
-
-
-//console.log(appData.addExpenses);
