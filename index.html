@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random</title>
+</head>
+<body>
+  <div class="wrapper">
+    <h1 id="color">#a62f6c</h1>
+    <button id="change" type="button">New color</button>
+  </div>
+
+<script>
+  const h1 = document.getElementById('color');
+  const button = document.getElementById('change');
+
+  document.body.style.backgroundColor = h1.textContent;
+
+  function randomColor() {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random()*16)];
+    }
+    //Other option : let random = '#' + ('000000' + (Math.random()*0xFFFFFF<<0).toString(16)).slice(-6);
+    document.body.style.backgroundColor = color;
+    h1.textContent = color;
+    return color;
+  }
+
+button.addEventListener('click', randomColor);
+</script>
+</body>
+</html>
