@@ -107,9 +107,9 @@ AppData.prototype.getExpensesBlock = function(){
   let cloneExpensesItem = expensesItems[0].cloneNode(true);
   expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesAddButton);
   expensesItems = document.querySelectorAll('.expenses-items');
-  expensesItems.forEach (function(item) {
-    item.value = '';
-  });
+  for (let i = 0; i < cloneExpensesItem.childNodes.length; i++) {
+        cloneExpensesItem.childNodes[i].value = '';
+      }
   if (expensesItems.length === 3) {
     expensesAddButton.style.display = 'none';
   }
@@ -131,7 +131,9 @@ AppData.prototype.getIncomeBlock = function() {
   let cloneIncomeItems = incomeItems[0].cloneNode(true);
   incomeItems[0].parentNode.insertBefore(cloneIncomeItems, incomeAddButton);
   incomeItems = document.querySelectorAll('.income-items');
-
+  for (let i = 0; i < cloneIncomeItems.childNodes.length; i++) {
+        cloneIncomeItems.childNodes[i].value = '';
+      }
   if (incomeItems.length === 3) {
     incomeAddButton.style.display = 'none';
   }
