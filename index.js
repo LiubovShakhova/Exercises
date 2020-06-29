@@ -24,6 +24,7 @@ const startButton = document.getElementById('start'),
     depositPercent = document.querySelector('.deposit-percent'),
     targetAmount = document.querySelector('.target-amount'),
     periodSelect = document.querySelector('input#period-select'),
+    depositBank = document.querySelector('.deposit-bank'),
     periodAmount = document.querySelector('.period-amount');
 
 let expensesItems = document.querySelectorAll('.expenses-items'),
@@ -77,6 +78,7 @@ class AppData {
       this.getExpensesMonth(); 
       this.getAddExpenses();
       this.getAddIncome();
+      this.getInfoDeposit();
       this.getBudget();
       this.changePeriod();
       this.showResult();
@@ -177,7 +179,8 @@ class AppData {
     }
 
     getBudget() {
-      this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
+      const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
+      this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + monthDeposit;
       this.budgetDay = Math.floor(this.budgetMonth / 30);
     }
 
@@ -194,19 +197,6 @@ class AppData {
         return ('К сожалению, у вас уровень дохода ниже среднего');
       } else {
         return ('Что то пошло не так');
-      }
-    }
-
-    getInfoDeposit(){
-      if(this.deposit) {
-        this.percentDeposit = prompt('Какой годовой процент?', 10);
-        while (!this.isNumber(this.percentDeposit)) {
-          this.percentDeposit = prompt('Какой годовой процент?', 10);
-        }
-        this.moneyDeposit = prompt('Какая сумма заложена?', 10000);
-        while (!this.isNumber(this.moneyDeposit)) {
-          this.moneyDeposit = prompt('Какая сумма заложена?', 10000);
-        }
       }
     }
 
@@ -259,15 +249,61 @@ class AppData {
         cancelButton.style.display = 'none';
         incomeAddButton.removeAttribute('disabled');
         expensesAddButton.removeAttribute('disabled');
+        this.depositHandler();
+    }
+
+    getInfoDeposit(){
+      if(this.deposit) {
+        this.percentDeposit = depositPercent.value;
+        this.moneyDeposit = depositAmount.value;
+      }
+    }
+
+    changePercent() {
+      const valueSelect = this.value;
+      if (valueSelect === 'other') {
+        depositPercent.style.display = 'inline-block';
+      } else {
+          depositPercent.value = valueSelect;
+          this.percentDeposit = depositPercent.value;
+          depositPercent.style.display = 'none';
+          depositAmount.value = '';
+      }
+    }
+
+    depositHandler() {
+      if(depositCheck.checked) {
+        depositBank.style.display = 'inline-block';
+        depositAmount.style.display = 'inline-block';
+        this.deposit = true;
+        depositBank.addEventListener('change', this.changePercent);
+      } else {
+        depositBank.style.display = 'none';
+        depositAmount.style.display = 'none';
+        depositPercent.style.display= 'none';
+        depositBank.value = '';
+        depositAmount.value = '';
+        this.deposit = false;
+        depositBank.removeEventListener('change', this.changePercent);
+      }
     }
 
     EventListener() {
-      startButton.addEventListener('click', this.start.bind(appData));
+      startButton.addEventListener('click', this.start.bind(this));
       expensesAddButton.addEventListener('click', this.getExpensesBlock);
       incomeAddButton.addEventListener('click', this.getIncomeBlock);
       periodSelect.addEventListener('input', this.changePeriod);
-      cancelButton.addEventListener('click', this.reset.bind(appData));
+      cancelButton.addEventListener('click', this.reset.bind(this));
       salaryAmount.addEventListener('keyup', this.check);
+      depositCheck.addEventListener('change', this.depositHandler.bind(this));
+      depositPercent.addEventListener('change', () => {
+        if (!this.isNumber(depositPercent.value) || depositPercent.value > 100 || depositPercent.value <= 0) {
+          alert('Введите корректное значение в поле проценты');
+          startButton.disabled = true;
+          depositPercent.value = '';
+          startButton.disabled = false;
+        }
+      });
     }
 }
 
