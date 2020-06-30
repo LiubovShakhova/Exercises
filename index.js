@@ -83,6 +83,7 @@ class AppData {
       this.changePeriod();
       this.showResult();
       this.canceled();
+      this.saveLocalStorage();
     }
 
     canceled() {
@@ -250,6 +251,10 @@ class AppData {
         incomeAddButton.removeAttribute('disabled');
         expensesAddButton.removeAttribute('disabled');
         this.depositHandler();
+
+        localStorage.removeItem('data');
+        document.cookie = 'data=json; expires=Mo, 08 Jun 2020 00:00:00 GMT';
+        document.cookie = 'isLoad=true; expires=Mo, 08 Jun 2020 00:00:00 GMT';
     }
 
     getInfoDeposit(){
@@ -288,6 +293,45 @@ class AppData {
       }
     }
 
+    saveLocalStorage() {
+    let allInputsRight = {
+      budgetMonthValue: budgetMonthValue.value,
+      budgetDayValue: budgetDayValue.value,
+      expensesMonthValue: expensesMonthValue.value,
+      additionalExpensesValue: additionalExpensesValue.value,
+      additionalIncomeValue: additionalIncomeValue.value,
+      targetMonthValue: targetMonthValue.value,
+      incomePeriodValue: incomePeriodValue.value,
+      depositAmount: depositAmount.value,
+      depositPercent: depositPercent.value
+      };
+      
+      let json = JSON.stringify(allInputsRight);
+      localStorage.setItem('data', json);
+      document.cookie = 'data=json';
+      document.cookie = 'isLoad=true';
+    }
+
+    getLocalStorage() {
+      const allInputsRight = JSON.parse(localStorage.getItem('data'));
+      const cookie = document.cookie.split('; ');
+
+      if (allInputsRight && cookie[0] === 'data=json' && cookie[1] === 'isLoad=true') {
+            const allInputs = document.querySelectorAll('[class$="-value"]');
+            let i = 0;
+
+            for (let key in allInputsRight) {
+                allInputs[i].value = allInputsRight[key];
+                i++;
+            }
+      } else {
+          document.cookie = 'data=json; expires=Mo, 08 Jun 2020 00:00:00 GMT';
+          document.cookie = 'isLoad=true; expires=Mo, 08 Jun 2020 00:00:00 GMT';
+          localStorage.removeItem('data');
+          this.reset();
+        }
+    }
+
     EventListener() {
       startButton.addEventListener('click', this.start.bind(this));
       expensesAddButton.addEventListener('click', this.getExpensesBlock);
@@ -304,13 +348,12 @@ class AppData {
           startButton.disabled = false;
         }
       });
+      document.addEventListener('DOMContentLoaded', this.getLocalStorage.bind(this));
     }
 }
 
 const appData = new AppData();
 appData.EventListener();
-console.log(appData);
-
 });
 
 
