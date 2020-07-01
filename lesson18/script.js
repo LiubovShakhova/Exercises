@@ -1,4 +1,4 @@
-
+'use strict';
 
 const greeting = document.getElementById('greeting'),
 	today = document.getElementById('today'),
