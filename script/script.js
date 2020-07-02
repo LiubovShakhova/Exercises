@@ -41,8 +41,10 @@ window.addEventListener('DOMContentLoaded', () => {
 		const btnMenu = document.querySelector('.menu'),
 			menu = document.querySelector('menu'),
 			closeBtn = document.querySelector('.close-btn'),
-			menuItems = menu.querySelectorAll('ul > li');
-
+			menuItems = menu.querySelectorAll('ul > li'),
+			scrollBtn = document.querySelector('a[href="#service-block"]');
+			
+		const	smoothScroll = (elem) => elem.scrollIntoView({behavior: "smooth"});
 		const handlerMenu = () => {
 			menu.classList.toggle('active-menu');
 		};
@@ -50,7 +52,18 @@ window.addEventListener('DOMContentLoaded', () => {
 		btnMenu.addEventListener('click', handlerMenu);
 		closeBtn.addEventListener('click', handlerMenu);
 
-		menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
+		menuItems.forEach(elem => elem.addEventListener('click', (event) => {
+			event.preventDefault();
+			//скрипт плавной прокрутки страницы при клике на элементы меню
+			smoothScroll(document.querySelector(elem.hash));
+			handlerMenu();
+		}
+		));
+
+		scrollBtn.addEventListener("click", () => {
+			event.preventDefault();
+			smoothScroll(document.querySelector(scrollBtn.hash));
+	});
 	};
 	toggleMenu();
 
