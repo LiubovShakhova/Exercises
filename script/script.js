@@ -22,24 +22,69 @@ window.addEventListener('DOMContentLoaded', () => {
 			timerMinutes.textContent = timer.minutes;
 			timerSeconds.textContent = timer.seconds;
 
-		if (timer.timeRemaining < 0) {
-      timerHours.textContent = '00';
-      timerMinutes.textContent = '00';
-      timerSeconds.textContent = '00';
-		} else { 
-      timerHours.textContent = timer.hours < 10 ? `0${timer.hours}` : timer.hours;
-      timerMinutes.textContent = timer.minutes < 10 ? `0${timer.minutes}` : timer.minutes;
-      timerSeconds.textContent = timer.seconds < 10 ? `0${timer.seconds}` : timer.seconds;
-    }
+			if (timer.timeRemaining < 0) {
+				timerHours.textContent = '00';
+				timerMinutes.textContent = '00';
+				timerSeconds.textContent = '00';
+			} else {
+				timerHours.textContent = timer.hours < 10 ? `0${timer.hours}` : timer.hours;
+				timerMinutes.textContent = timer.minutes < 10 ? `0${timer.minutes}` : timer.minutes;
+				timerSeconds.textContent = timer.seconds < 10 ? `0${timer.seconds}` : timer.seconds;
+			}
 		}
 		setInterval(updateClock, 1000);
 	}
 	countTimer('5 july 2020');
 
+	//Menu
+	const toggleMenu = () => {
+		const btnMenu = document.querySelector('.menu'),
+			menu = document.querySelector('menu'),
+			closeBtn = document.querySelector('.close-btn'),
+			menuItems = menu.querySelectorAll('ul > li');
 
+		const handlerMenu = () => {
+			menu.classList.toggle('active-menu');
+		};
 
+		btnMenu.addEventListener('click', handlerMenu);
+		closeBtn.addEventListener('click', handlerMenu);
 
+		menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
+	};
+	toggleMenu();
 
+	//popup
+	const togglePopUp = () => {
+		const popup = document.querySelector('.popup'),
+			popupBtn = document.querySelectorAll('.popup-btn'),
+			popupClose = document.querySelector('.popup-close');
 
+		//анимацию появления модального окна
+		let counter = 0;
 
+		const animate = () => {
+			const animation = requestAnimationFrame(animate);
+			if (counter >= 1) {
+				counter = 0;
+				return cancelAnimationFrame(animation);
+			}
+			counter += 0.05;
+			popup.style.opacity = counter;
+		};
+
+		popupBtn.forEach(elem => {
+			elem.addEventListener('click', () => {
+				popup.style.display = 'block';
+				if (document.body.clientWidth >= 768) {
+					animate();
+				}
+			});
+		});
+
+		popupClose.addEventListener('click', () => {
+			popup.style.display = 'none';
+		});
+	};
+	togglePopUp();
 });

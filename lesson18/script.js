@@ -1,5 +1,5 @@
 
-
+'use strict';
 const greeting = document.getElementById('greeting'),
 	today = document.getElementById('today'),
 	timeNow = document.getElementById('time_now');
