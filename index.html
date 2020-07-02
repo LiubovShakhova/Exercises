@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #page-wrapper {
+  width: 600px;
+  height: 150px;
+  background: #2ca1be;
+  padding: 1em;
+  margin: auto;
+  position: relative;
+}
+.controls {
+  margin: 1em 0;
+}
+button {
+  display: inline-block;
+  border-radius: 3px;
+  border: none;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8em;
+  background: #fbfcfb;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+}
+
+button:hover, button:focus {
+  opacity: 0.75;
+  cursor: pointer;
+}
+#div {
+  position:absolute;
+  bottom:0;
+  background:black;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+  </style>
+</head>
+<body>
+  <div id="page-wrapper">
+    <h1>requestAnimationFrame</h1>
+  
+    <div class="controls">
+      <button type="button" id="startBtn">Start Animation</button>
+      <button type="button" id="resetBtn">Reset</button>
+    </div>
+    <div id="div"></div>
+  </div>
+ <script src="script.js"></script> 
+</body>
+</html>
