@@ -238,7 +238,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				const li = document.createElement('li');
 				li.classList.add('dot');
 				if(index === 0) {
-						li.classList.add('dot-active');
+					li.classList.add('dot-active');
 				}
 				document.querySelector('.portfolio-dots').append(li);
 				});
