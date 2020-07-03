@@ -55,7 +55,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		menuItems.forEach(elem => elem.addEventListener('click', (event) => {
 			event.preventDefault();
 			//скрипт плавной прокрутки страницы при клике на элементы меню
-			smoothScroll(document.querySelector(elem.hash));
+			smoothScroll(document.querySelector(elem.firstChild.hash));
 			handlerMenu();
 		}
 		));
