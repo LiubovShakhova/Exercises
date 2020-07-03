@@ -54,16 +54,18 @@ window.addEventListener('DOMContentLoaded', () => {
 			}
 
 			target = target.closest('menu > ul > li > a');
+			
 			if (target) {
 				event.preventDefault();
 				smoothScroll(document.querySelector(target.hash));
 				handlerMenu();
+			//если клик произошел мимо меню, оно закрывается
+			} else if (menu.classList.contains('active-menu')) {
+				handlerMenu();
+			} else if (scrollBtn) {
+				event.preventDefault();
+				smoothScroll(document.querySelector(scrollBtn.hash));
 			}
-		});
-
-		scrollBtn.addEventListener("click", () => {
-			event.preventDefault();
-			smoothScroll(document.querySelector(scrollBtn.hash));
 		});
 	};
 	toggleMenu();
