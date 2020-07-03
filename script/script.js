@@ -43,35 +43,35 @@ window.addEventListener('DOMContentLoaded', () => {
 			closeBtn = document.querySelector('.close-btn'),
 			menuItems = menu.querySelectorAll('ul > li'),
 			scrollBtn = document.querySelector('a[href="#service-block"]');
-			
-		const	smoothScroll = (elem) => elem.scrollIntoView({behavior: "smooth"});
-		const handlerMenu = () => {
-			menu.classList.toggle('active-menu');
-		};
 
-		btnMenu.addEventListener('click', handlerMenu);
-		closeBtn.addEventListener('click', handlerMenu);
+		const	smoothScroll = elem => elem.scrollIntoView({ behavior: "smooth" });
+		const handlerMenu = () => menu.classList.toggle('active-menu');
 
-		menuItems.forEach(elem => elem.addEventListener('click', (event) => {
-			event.preventDefault();
-			//скрипт плавной прокрутки страницы при клике на элементы меню
-			smoothScroll(document.querySelector(elem.hash));
-			handlerMenu();
-		}
-		));
+		document.body.addEventListener('click', event => {
+			let target = event.target;
+			if (target.classList.contains('close-btn') || target.closest('.menu')) {
+				return handlerMenu();
+			}
+
+			target = target.closest('menu > ul > li > a');
+			if (target) {
+				event.preventDefault();
+				smoothScroll(document.querySelector(target.hash));
+				handlerMenu();
+			}
+		});
 
 		scrollBtn.addEventListener("click", () => {
 			event.preventDefault();
 			smoothScroll(document.querySelector(scrollBtn.hash));
-	});
+		});
 	};
 	toggleMenu();
 
 	//popup
 	const togglePopUp = () => {
 		const popup = document.querySelector('.popup'),
-			popupBtn = document.querySelectorAll('.popup-btn'),
-			popupClose = document.querySelector('.popup-close');
+			popupBtn = document.querySelectorAll('.popup-btn');
 
 		//анимацию появления модального окна
 		let counter = 0;
@@ -95,9 +95,50 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 		});
 
-		popupClose.addEventListener('click', () => {
-			popup.style.display = 'none';
+		popup.addEventListener('click', event => {
+			let target = event.target;
+
+			if (target.classList.contains('popup-close')) {
+				popup.style.display = 'none';
+			} else {
+				target = target.closest('.popup-content');
+
+				if (!target) {
+					popup.style.display = 'none';
+				}
+			}
 		});
 	};
 	togglePopUp();
+
+	//Tabs
+	const tabs = () => {
+		const tabHeader = document.querySelector('.service-header'),
+			tab = tabHeader.querySelectorAll('.service-header-tab'),
+			tabContent = document.querySelectorAll('.service-tab');
+
+		const toggleTabContent = index => {
+			for (let i = 0; i < tabContent.length; i++) {
+				if (index === i) {
+					tab[i].classList.add('active');
+					tabContent[i].classList.remove('d-none');
+				} else {
+					tab[i].classList.remove('active');
+					tabContent[i].classList.add('d-none');
+				}
+			}
+		};
+		tabHeader.addEventListener('click', event => {
+			let target = event.target;
+			target = target.closest('.service-header-tab');
+			if (target) {
+				tab.forEach((item, i) => {
+					if (item === target) {
+						toggleTabContent(i);
+					}
+				});
+			}
+		});
+	};
+	tabs();
 });
