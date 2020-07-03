@@ -68,7 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 	};
-	toggleMenu();
+	toggleMenu(event);
 
 	//popup
 	const togglePopUp = () => {
