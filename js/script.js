@@ -27,6 +27,7 @@ class Todo {
         li.insertAdjacentHTML('beforeend', `
         <span class="text-todo">${todo.value}</span>
         <div class="todo-buttons">
+          <button class="todo-edit"></button>
           <button class="todo-remove"></button>
           <button class="todo-complete"></button>
 				</div>
@@ -50,8 +51,8 @@ class Todo {
             this.todoData.set(newTodo.key, newTodo);
             this.render();
         } else {
-          //2) Сообщить пользователю (любым способом) что пустое дело добавить нельзя!
-          alert('пустое дело добавить нельзя!');
+            //2) Сообщить пользователю (любым способом) что пустое дело добавить нельзя!
+            alert('пустое дело добавить нельзя!');
         }
     }
 
@@ -81,10 +82,14 @@ class Todo {
         this.render();
     }
 
+    editItem(todo) {
+      
+    }
+
     handler() {
         document.querySelector('.todo-container').addEventListener('click', event => {
             event.preventDefault();
-            const target = event.target;
+            let target = event.target;
 
             if (target.matches('.todo-complete')) {
                 target.key = target.closest('.todo-item').key;
@@ -92,7 +97,7 @@ class Todo {
             } else if (target.matches('.todo-remove')) {
                 target.key = target.closest('.todo-item').key;
                 this.deleteItem(target.key);
-            }
+            } 
         });
     }
 
