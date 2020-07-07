@@ -50,6 +50,7 @@ class Todo {
             };
             this.todoData.set(newTodo.key, newTodo);
             this.render();
+            this.input.value = '';
         } else {
             //2) Сообщить пользователю (любым способом) что пустое дело добавить нельзя!
             alert('пустое дело добавить нельзя!');
@@ -82,8 +83,17 @@ class Todo {
         this.render();
     }
 
-    editItem(todo) {
-      
+    editItem(target) {
+        const targetKey = target.key;
+        target.contentEditable = 'true';
+        target.addEventListener('blur', () => {
+            for (const [key, value] of this.todoData) {
+                if (targetKey === key) {
+                    value.value = target.textContent.trim();
+                    this.addToStorage();
+                }
+            }
+        });
     }
 
     handler() {
@@ -92,12 +102,15 @@ class Todo {
             let target = event.target;
 
             if (target.matches('.todo-complete')) {
-                target.key = target.closest('.todo-item').key;
+                target = target.closest('.todo-item');
                 this.completedItem(target.key);
             } else if (target.matches('.todo-remove')) {
-                target.key = target.closest('.todo-item').key;
-                this.deleteItem(target.key);
-            } 
+                target = target.closest('.todo-item');
+                this.deleteItem(target.key);   
+            } else if (target.matches('.todo-edit')) {
+                target = target.closest('.todo-item');
+                this.editItem(target);
+            }
         });
     }
 
