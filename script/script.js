@@ -155,8 +155,8 @@ window.addEventListener('DOMContentLoaded', () => {
 			slider = document.querySelector('.portfolio-content');
 
 		let currentSlide = 0,
-				interval,
-				dot = document.querySelectorAll('.dot');
+			interval,
+			dot = document.querySelectorAll('.dot');
 
 		const prevSlide = (elem, index, strClass) => {
 			elem[index].classList.remove(strClass);
@@ -188,7 +188,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		slider.addEventListener('click', event => {
 			event.preventDefault();
-			let target = event.target;
+			const target = event.target;
 
 			if (!target.matches('.portfolio-btn, .dot')) {
 				return;
@@ -219,13 +219,13 @@ window.addEventListener('DOMContentLoaded', () => {
 			nextSlide(dot, currentSlide, 'dot-active');
 		});
 
-		slider.addEventListener('mouseover', (event) => {
+		slider.addEventListener('mouseover', event => {
 			if (event.target.matches('.portfolio-btn') ||
 			event.target.matches('.dot')) {
 				stopSlide();
 			}
 		});
-		slider.addEventListener('mouseout', (event) => {
+		slider.addEventListener('mouseout', event => {
 			if (event.target.matches('.portfolio-btn') ||
 			event.target.matches('.dot')) {
 				startSlide();
@@ -237,16 +237,49 @@ window.addEventListener('DOMContentLoaded', () => {
 			slide.forEach((item, index) => {
 				const li = document.createElement('li');
 				li.classList.add('dot');
-				if(index === 0) {
-						li.classList.add('dot-active');
+				if (index === 0) {
+					li.classList.add('dot-active');
 				}
 				document.querySelector('.portfolio-dots').append(li);
-				});
-				dot = document.querySelectorAll('.dot');
+			});
+			dot = document.querySelectorAll('.dot');
 		};
 
 		getDots();
 		startSlide(3000);
 	};
 	slider();
+
+	//Team
+	const myTeam = () => {
+		const teamRow = document.querySelector('.command>.container>.row');
+
+		const changePhoto = event => {
+			const target = event.target;
+
+			if (target.classList.contains("command__photo")) {
+				let src = target.src;
+				target.src = target.dataset.img;
+				target.dataset.img = src;
+			}
+		};
+		teamRow.addEventListener("mouseover", changePhoto);
+		teamRow.addEventListener("mouseout", changePhoto);
+	};
+	myTeam();
+
+	//Calculate
+	const calculator = () => {
+		const calcBlock = document.querySelector('.calc-block');
+
+		const validation = event => {
+			const target = event.target;
+
+			if (target.classList.contains('calc-item')) {
+					target.value = target.value.replace(/\D/, "");
+			} 
+		};
+		calcBlock.addEventListener("input", validation);
+	};
+	calculator();
 });
