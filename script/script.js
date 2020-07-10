@@ -291,6 +291,22 @@ window.addEventListener('DOMContentLoaded', () => {
 			calcCount = document.querySelector('.calc-count'),
 			totalValue = document.getElementById('total');
 
+		//перебор цифр
+		let interval;
+		const animate = (total) => {
+      let i = 0;
+        if (total) {
+          interval = setInterval(() => {
+						if (i >= total){
+              clearInterval(interval);
+            } else {
+              i += 100;
+              totalValue.textContent = i; 
+            }
+					}, 40);
+        }
+    };
+
 		const countSum = () => {
 			let total = 0,
 					countValue = 1,
@@ -311,7 +327,9 @@ window.addEventListener('DOMContentLoaded', () => {
 			if (typeValue && squareValue) {
 				total = price * typeValue * squareValue * countValue * dayValue;
 			}
-			totalValue.textContent = total;
+			if (total) {
+        animate(total);
+      }
 		};
 
 		calcBlock.addEventListener('change', (event) => {
