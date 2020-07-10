@@ -294,18 +294,18 @@ window.addEventListener('DOMContentLoaded', () => {
 		//перебор цифр
 		let interval;
 		const animate = (total) => {
-      let i = 0;
-        if (total) {
-          interval = setInterval(() => {
-						if (i >= total){
-              clearInterval(interval);
-            } else {
-              i += 100;
-              totalValue.textContent = i; 
-            }
-					}, 40);
-        }
-    };
+		      let i = 0;
+			if (total) {
+			  interval = setInterval(() => {
+				if (i >= total){
+			      		clearInterval(interval);
+			    	} else {
+			      	i += 100;
+			      	totalValue.textContent = i; 
+			    }
+			}, 40);
+			}
+		    };
 
 		const countSum = () => {
 			let total = 0,
