@@ -372,7 +372,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			event.preventDefault();
 			form.append(statusMessage);
 			form.append(preloader);
-      preloader.classList.remove('d-none');
+      			preloader.classList.remove('d-none');
 
 			const formData = new FormData(form);
 			let body = {};
@@ -388,23 +388,23 @@ window.addEventListener('DOMContentLoaded', () => {
 					statusMessage.textContent = successMessage;
 					//После отправки инпуты должны очищаться
 					[...form.elements].forEach(elem => {
-            if(elem.tagName.toLowerCase() === 'input') {
-              elem.value = '';
-          	}
-          });
+					    if(elem.tagName.toLowerCase() === 'input') {
+					      elem.value = '';
+						}
+					  });
 				}, 
 				(error) => {
 					preloader.classList.add('d-none');
 					statusMessage.textContent = errorMessage;
 					[...form.elements].forEach(elem => {
-            if(elem.tagName.toLowerCase() === 'input') {
-              elem.value = '';
-          	}
-          });
+					    if(elem.tagName.toLowerCase() === 'input') {
+					      elem.value = '';
+						}
+					  });
 					console.error(error);
 				}
 				);
-		});
+			});
 
 		const postData = (body, outputData, errorData) => {
 			const request = new XMLHttpRequest();
@@ -422,9 +422,9 @@ window.addEventListener('DOMContentLoaded', () => {
 			request.setRequestHeader('Content-Type', /* 'multipart/form-data' */ 'application/json');
 			request.send(JSON.stringify(body));
 
-		}		
-	};
-	sendForm();
+			}		
+		};
+		sendForm();
 
 	//Validation
 	const validate = (target) => {
