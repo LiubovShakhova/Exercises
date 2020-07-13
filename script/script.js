@@ -352,7 +352,12 @@ window.addEventListener('DOMContentLoaded', () => {
 		const statusMessage = document.createElement('div');
 		statusMessage.style.cssText = 'font-size: 2rem';
 
-		form.addEventListener('submit', (event) => {
+		document.body.addEventListener('submit', (event) => {
+			if(event.target.tagName.toLowerCase() !== 'form') {
+				return;
+      }
+			const form = event.target;
+
 			event.preventDefault();
 			form.append(statusMessage);
 			statusMessage.textContent = loadMessage;
@@ -367,9 +372,20 @@ window.addEventListener('DOMContentLoaded', () => {
 			postData(body, 
 				() => {
 					statusMessage.textContent = successMessage;
+					//После отправки инпуты должны очищаться
+					[...form.elements].forEach(elem => {
+            if(elem.tagName.toLowerCase() === 'input') {
+              elem.value = '';
+          	}
+          });
 				}, 
 				(error) => {
 					statusMessage.textContent = errorMessage;
+					[...form.elements].forEach(elem => {
+            if(elem.tagName.toLowerCase() === 'input') {
+              elem.value = '';
+          	}
+          });
 					console.error(error);
 				}
 				);
@@ -394,5 +410,19 @@ window.addEventListener('DOMContentLoaded', () => {
 		}		
 	};
 	sendForm();
+
+	//Validation
+	const validate = (target) => {
+		document.body.addEventListener('input', (event) => {
+			const target = event.target;
+			if (target.classList.contains('form-phone')) {
+          target.value = target.value.replace(/[^\+\d]/g, '');
+      } else if (target.classList.contains('form-name') ||
+			target.classList.contains('mess') || target.matches('#form2-name')) {
+				target.value = target.value.replace(/[^а-яё\s]/ig, '');	
+			}
+		});		 
+	};
+	validate();
 
 });
