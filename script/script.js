@@ -345,22 +345,35 @@ window.addEventListener('DOMContentLoaded', () => {
 	//send-ajax-form
 	const sendForm = () => {
 		const errorMessage = 'Что-то пошло не так...',
-				loadMessage = 'Загрузка...',
 				successMessage = 'Спасибо! Мы скоро с Вами свяжемся.';
 		const form = document.getElementById('form1');
 		
 		const statusMessage = document.createElement('div');
 		statusMessage.style.cssText = 'font-size: 2rem';
 
+		let preloader;
+		const animatePreloader = () => {
+				preloader =  document.createElement('div');
+				preloader.className = 'loader d-none';
+				preloader.innerHTML = `
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+				`;		
+   	};
+		animatePreloader();
+
 		document.body.addEventListener('submit', (event) => {
 			if(event.target.tagName.toLowerCase() !== 'form') {
 				return;
       }
 			const form = event.target;
-
 			event.preventDefault();
 			form.append(statusMessage);
-			statusMessage.textContent = loadMessage;
+			form.append(preloader);
+      preloader.classList.remove('d-none');
+
 			const formData = new FormData(form);
 			let body = {};
 			/* for (let val of formData.entries()) {
@@ -371,6 +384,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			})
 			postData(body, 
 				() => {
+					preloader.classList.add('d-none');
 					statusMessage.textContent = successMessage;
 					//После отправки инпуты должны очищаться
 					[...form.elements].forEach(elem => {
@@ -380,6 +394,7 @@ window.addEventListener('DOMContentLoaded', () => {
           });
 				}, 
 				(error) => {
+					preloader.classList.add('d-none');
 					statusMessage.textContent = errorMessage;
 					[...form.elements].forEach(elem => {
             if(elem.tagName.toLowerCase() === 'input') {
@@ -396,7 +411,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			request.addEventListener('readystatechange', () => {
 				if (request.readyState !== 4) {
 					return;
-				}
+				} else
 				if (request.status === 200) {
 					outputData();			
 				} else {
