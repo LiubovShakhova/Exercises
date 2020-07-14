@@ -67,4 +67,8 @@
 }
 
 body {
-  background-color: #584E4A;
+  background-color: #584E4A; }
+
+body #form3 div[style="font-size: 2rem;"] {
+  color: #ffffff;
+}

@@ -281,7 +281,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		};
 		calcBlock.addEventListener("input", validation);
 	};
-	calculator(); 
+	calculator();
 
 	const calc = (price = 100) => {
 		const calcBlock = document.querySelector('.calc-block'),
@@ -293,26 +293,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		//перебор цифр
 		let interval;
-		const animate = (total) => {
-      let i = 0;
-        if (total) {
-          interval = setInterval(() => {
-						if (i >= total){
-              clearInterval(interval);
-            } else {
-              i += 100;
-              totalValue.textContent = i; 
-            }
-					}, 40);
-        }
-    };
+		const animate = total => {
+			let i = 0;
+			if (total) {
+				interval = setInterval(() => {
+					if (i >= total) {
+						clearInterval(interval);
+					} else {
+						i += 100;
+						totalValue.textContent = i;
+					}
+				}, 40);
+			}
+		};
 
 		const countSum = () => {
 			let total = 0,
-					countValue = 1,
-					dayValue = 1;
+				countValue = 1,
+				dayValue = 1;
 			const typeValue = calcType.options[calcType.selectedIndex].value,
-					squareValue = +calcSquare.value;
+				squareValue = +calcSquare.value;
 
 			if (calcCount.value > 1) {
 				countValue += (calcCount.value - 1) / 10;
@@ -328,11 +328,11 @@ window.addEventListener('DOMContentLoaded', () => {
 				total = price * typeValue * squareValue * countValue * dayValue;
 			}
 			if (total) {
-        animate(total);
-      }
+				animate(total);
+			}
 		};
 
-		calcBlock.addEventListener('change', (event) => {
+		calcBlock.addEventListener('change', event => {
 			const target = event.target;
 
 			if (target.matches('select') || target.matches('input')) {
@@ -345,98 +345,109 @@ window.addEventListener('DOMContentLoaded', () => {
 	//send-ajax-form
 	const sendForm = () => {
 		const errorMessage = 'Что-то пошло не так...',
-				successMessage = 'Спасибо! Мы скоро с Вами свяжемся.';
-		const form = document.getElementById('form1');
-		
+			successMessage = 'Спасибо! Мы скоро с Вами свяжемся.';
+
 		const statusMessage = document.createElement('div');
 		statusMessage.style.cssText = 'font-size: 2rem';
 
 		let preloader;
 		const animatePreloader = () => {
-				preloader =  document.createElement('div');
-				preloader.className = 'loader d-none';
-				preloader.innerHTML = `
+			preloader =  document.createElement('div');
+			preloader.className = 'loader d-none';
+			preloader.innerHTML = `
 						<span></span>
 						<span></span>
 						<span></span>
 						<span></span>
-				`;		
-   	};
+				`;
+		};
 		animatePreloader();
 
-		document.body.addEventListener('submit', (event) => {
-			if(event.target.tagName.toLowerCase() !== 'form') {
+		const postData = body => new Promise((resolve, reject) => {
+			const request = new XMLHttpRequest();
+			request.addEventListener('readystatechange', () => {
+				if (request.readyState !== 4) {
+					return;
+				}
+				if (request.status === 200) {
+					resolve();
+				} else {
+					reject(request.status);
+				}
+			});
+
+			request.open('POST', './server.php');
+			request.setRequestHeader('Content-Type', /* 'multipart/form-data' */ 'application/json');
+			request.send(JSON.stringify(body));
+		});
+
+		document.body.addEventListener('submit', event => {
+			if (event.target.tagName.toLowerCase() !== 'form') {
 				return;
-      }
+			}
 			const form = event.target;
 			event.preventDefault();
 			form.append(statusMessage);
 			form.append(preloader);
-      preloader.classList.remove('d-none');
+			preloader.classList.remove('d-none');
 
 			const formData = new FormData(form);
-			let body = {};
+			const body = {};
 			/* for (let val of formData.entries()) {
 				body[val[0]] = val[1];
 			} */
 			formData.forEach((val, key) => {
 				body[key] = val;
-			})
-			postData(body, 
-				() => {
+			});
+
+			postData(body)
+				.then(() => {
 					preloader.classList.add('d-none');
 					statusMessage.textContent = successMessage;
 					//После отправки инпуты должны очищаться
 					[...form.elements].forEach(elem => {
-            if(elem.tagName.toLowerCase() === 'input') {
-              elem.value = '';
-          	}
-          });
-				}, 
-				(error) => {
+						if (elem.tagName.toLowerCase() === 'input') {
+							elem.value = '';
+						}
+					});
+					form.addEventListener('input', () => {
+						if (statusMessage) {
+							statusMessage.remove();
+							statusMessage.textContent = '';
+						}
+					});
+				})
+				.catch(error => {
 					preloader.classList.add('d-none');
 					statusMessage.textContent = errorMessage;
-					[...form.elements].forEach(elem => {
-            if(elem.tagName.toLowerCase() === 'input') {
-              elem.value = '';
-          	}
-          });
 					console.error(error);
-				}
-				);
+					[...form.elements].forEach(elem => {
+						if (elem.tagName.toLowerCase() === 'input') {
+							elem.value = '';
+						}
+					});
+					form.addEventListener('input', () => {
+						if (statusMessage) {
+							statusMessage.remove();
+							statusMessage.textContent = '';
+						}
+					});
+				});
 		});
-
-		const postData = (body, outputData, errorData) => {
-			const request = new XMLHttpRequest();
-			request.addEventListener('readystatechange', () => {
-				if (request.readyState !== 4) {
-					return;
-				} else
-				if (request.status === 200) {
-					outputData();			
-				} else {
-					errorData(request.status);
-				}
-			});
-			request.open('POST', './server.php');
-			request.setRequestHeader('Content-Type', /* 'multipart/form-data' */ 'application/json');
-			request.send(JSON.stringify(body));
-
-		}		
 	};
 	sendForm();
 
 	//Validation
-	const validate = (target) => {
-		document.body.addEventListener('input', (event) => {
+	const validate = target => {
+		document.body.addEventListener('input', event => {
 			const target = event.target;
 			if (target.classList.contains('form-phone')) {
-          target.value = target.value.replace(/[^\+\d]/g, '');
-      } else if (target.classList.contains('form-name') ||
+				target.value = target.value.replace(/[^\+\d]/g, '');
+			} else if (target.classList.contains('form-name') ||
 			target.classList.contains('mess') || target.matches('#form2-name')) {
-				target.value = target.value.replace(/[^а-яё\s]/ig, '');	
+				target.value = target.value.replace(/[^а-яё\s]/ig, '');
 			}
-		});		 
+		});
 	};
 	validate();
 
