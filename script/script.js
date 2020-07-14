@@ -412,7 +412,6 @@ window.addEventListener('DOMContentLoaded', () => {
 					});
 					form.addEventListener('input', () => {
 						if (statusMessage) {
-							statusMessage.remove();
 							statusMessage.textContent = '';
 						}
 					});
@@ -428,7 +427,6 @@ window.addEventListener('DOMContentLoaded', () => {
 					});
 					form.addEventListener('input', () => {
 						if (statusMessage) {
-							statusMessage.remove();
 							statusMessage.textContent = '';
 						}
 					});
