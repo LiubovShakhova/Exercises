@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (request.status === 200) {
                 resolve(request.responseText); 
-                console.log(request.responseText)
             } else {
                 reject(request.statusText);
             }
