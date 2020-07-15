@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             if (request.status === 200) {
-                resolve(); 
+                resolve(request.responseText); 
+                console.log(request.responseText)
             } else {
                 reject(request.statusText);
             }
@@ -26,8 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     select.addEventListener('change', () => {
         sendRequest()
-            .then((request) => {
-                const data = JSON.parse(request.responseText);
+            .then(response => {
+                console.log(response)
+                const data = JSON.parse(response);
+                
                 data.cars.forEach(item => {
                     if (item.brand === select.value) {
                         const {brand, model, price} = item;
