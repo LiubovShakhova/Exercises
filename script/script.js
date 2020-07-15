@@ -1,7 +1,8 @@
 
 window.addEventListener('DOMContentLoaded', () => {
+
 	//Timer
-	 function countTimer(deadline) {
+	function countTimer(deadline) {
 		const timerHours = document.querySelector('#timer-hours'),
 			timerMinutes = document.querySelector('#timer-minutes'),
 			timerSeconds = document.querySelector('#timer-seconds');
@@ -34,14 +35,12 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 		setInterval(updateClock, 1000);
 	}
-	countTimer('5 july 2020');
+	countTimer('20 july 2020');
 
 	const	smoothScroll = elem => elem.scrollIntoView({ behavior: "smooth" });
 	//Menu
 	const toggleMenu = () => {
-		const btnMenu = document.querySelector('.menu'),
-			menu = document.querySelector('menu');
-
+		const menu = document.querySelector('menu');
 		const handlerMenu = () => menu.classList.toggle('active-menu');
 
 		document.body.addEventListener('click', event => {
@@ -151,7 +150,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	//Slider
 	const slider = () => {
 		const slide = document.querySelectorAll('.portfolio-item'),
-			btn = document.querySelectorAll('portfolio-btn'),
 			slider = document.querySelector('.portfolio-content');
 
 		let currentSlide = 0,
@@ -363,24 +361,16 @@ window.addEventListener('DOMContentLoaded', () => {
 		};
 		animatePreloader();
 
-		const postData = body => new Promise((resolve, reject) => {
-			const request = new XMLHttpRequest();
-			request.addEventListener('readystatechange', () => {
-				if (request.readyState !== 4) {
-					return;
-				}
-				if (request.status === 200) {
-					resolve();
-				} else {
-					reject(request.status);
-				}
-			});
-
-			request.open('POST', './server.php');
-			request.setRequestHeader('Content-Type', /* 'multipart/form-data' */ 'application/json');
-			request.send(JSON.stringify(body));
+		const postData = body => fetch('./server.php', {
+			method: 'POST',
+			mode: 'same-origin',
+			cache: 'default',
+			headers: {
+				'Form-Data': 'multipart/form-data'
+			},
+			body: JSON.stringify(body),
+			credentials: 'include'
 		});
-
 		document.body.addEventListener('submit', event => {
 			if (event.target.tagName.toLowerCase() !== 'form') {
 				return;
@@ -393,18 +383,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
 			const formData = new FormData(form);
 			const body = {};
-			/* for (let val of formData.entries()) {
-				body[val[0]] = val[1];
-			} */
 			formData.forEach((val, key) => {
 				body[key] = val;
 			});
 
 			postData(body)
-				.then(() => {
+				.then(response => {
+					if (response.status !== 200) {
+						throw new Error('Network error, status is not 200');
+					}
 					preloader.classList.add('d-none');
 					statusMessage.textContent = successMessage;
-					//После отправки инпуты должны очищаться
 					[...form.elements].forEach(elem => {
 						if (elem.tagName.toLowerCase() === 'input') {
 							elem.value = '';
@@ -412,7 +401,6 @@ window.addEventListener('DOMContentLoaded', () => {
 					});
 					form.addEventListener('input', () => {
 						if (statusMessage) {
-							statusMessage.remove();
 							statusMessage.textContent = '';
 						}
 					});
@@ -428,7 +416,6 @@ window.addEventListener('DOMContentLoaded', () => {
 					});
 					form.addEventListener('input', () => {
 						if (statusMessage) {
-							statusMessage.remove();
 							statusMessage.textContent = '';
 						}
 					});
@@ -438,7 +425,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	sendForm();
 
 	//Validation
-	const validate = target => {
+	const validate = () => {
 		document.body.addEventListener('input', event => {
 			const target = event.target;
 			if (target.classList.contains('form-phone')) {
