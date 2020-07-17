@@ -18,7 +18,8 @@ const sendForm = () => {
 	};
 	animatePreloader();
 
-	const postData = body => fetch('./server.php', {
+	const postData = body => {
+		return fetch('./server.php', {
 		method: 'POST',
 		mode: 'same-origin',
 		cache: 'default',
@@ -28,14 +29,15 @@ const sendForm = () => {
 		body: JSON.stringify(body),
 		credentials: 'include'
 	});
+};
 	document.body.addEventListener('submit', event => {
 		if (event.target.tagName.toLowerCase() !== 'form') {
 			return;
 		}
 		const form = event.target;
 		event.preventDefault();
-		form.append(statusMessage);
-		form.append(preloader);
+		form.appendChild(statusMessage);
+		form.appendChild(preloader);
 		preloader.classList.remove('d-none');
 
 		const formData = new FormData(form);
@@ -66,6 +68,7 @@ const sendForm = () => {
 				preloader.classList.add('d-none');
 				statusMessage.textContent = errorMessage;
 				console.error(error);
+				/*[...form.elements]*/
 				[...form.elements].forEach(elem => {
 					if (elem.tagName.toLowerCase() === 'input') {
 						elem.value = '';

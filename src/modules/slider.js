@@ -88,7 +88,7 @@ const slider = () => {
 			if (index === 0) {
 				li.classList.add('dot-active');
 			}
-			document.querySelector('.portfolio-dots').append(li);
+			document.querySelector('.portfolio-dots').appendChild(li);
 		});
 		dot = document.querySelectorAll('.dot');
 	};
