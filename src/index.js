@@ -4,8 +4,13 @@ import 'nodelist-foreach-polyfill';
 import elementClosest from 'element-closest';
 elementClosest(window);
 import 'es6-promise';
-import 'fetch-polyfill';
 import 'formdata-polyfill';
+import 'fetch-polyfill';
+import 'element-remove-polyfill';
+import 'whatwg-fetch';
+import smoothscrollPolyfill from 'smoothscroll-polyfill';
+import 'scroll-behavior-polyfill';
+smoothscrollPolyfill.polyfill();
 
 import countTimer from './modules/countTimer';
 import toggleMenu from './modules/toggleMenu';

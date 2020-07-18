@@ -72,3 +72,6 @@ body {
 body #form3 div[style="font-size: 2rem;"] {
   color: #ffffff;
 }
+a.close-btn {
+  position:absolute;
+}
