@@ -23,6 +23,7 @@ import calculator from './modules/calculator';
 import calc from './modules/calc';
 import sendForm from './modules/sendForm';
 import validate from './modules/validate';
+import sliderCarousel from './modules/sliderCarousel';
 
 //Timer
 countTimer('20 july 2020');
@@ -45,3 +46,4 @@ calc(100);
 sendForm();
 //Validation
 validate();
+sliderCarousel();
